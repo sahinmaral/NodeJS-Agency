@@ -1,0 +1,142 @@
+<% if(!userIn) { %>
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../admin/partials/_header") %>
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Preloader -->
+      <div
+        class="preloader flex-column justify-content-center align-items-center"
+      >
+        <img
+          class="animation__shake"
+          src="dist/img/AdminLTELogo.png"
+          alt="AdminLTELogo"
+          height="60"
+          width="60"
+        />
+      </div>
+
+      <!-- Navbar -->
+      <%- include('../admin/partials/_navbar') %>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <%- include('../admin/partials/_sidebar') %>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0">Products</h1>
+              </div>
+              <!-- /.col -->
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Products</a></li>
+                  <li class="breadcrumb-item active">Show at table</li>
+                </ol>
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body p-0">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Name</th>
+                            <th>Slogan</th>
+                            <th>Client</th>
+                            <th>Category</th>
+                            <th>Options</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for(let i=0; i < products.length; i++ ) { %>
+                            <tr>
+                              <td><%= products[i]._id %></td>
+                              <td><%= products[i].name %></td>
+                              <td><%= products[i].slogan %></td>
+                              <td><%= products[i].client.name %></td>
+                              <td><%= products[i].category.name %></td>
+                              <td>
+                                <a class="btn btn-success" href="/admin/products/update/<%= products[i]._id %>">Update</a>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#verifyDeleteProductModal-<%= products[i]._id %>">
+                                  Delete
+                                </button>
+                              </td>
+                              <div class="modal fade" id="verifyDeleteProductModal-<%= products[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="verifyDeleteProductModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="verifyDeleteProductModalLabel">Warning</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      Are you sure about deleting this product ?
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      <form action="./products/delete/<%= products[i]._id %>" method="post">
+                                        <button type="submit" class="btn btn-primary">Delete</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div class="card-footer">
+                  <ul class="pagination pagination-sm m-0 justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                  </ul>
+                </div>
+                </div>
+            </div>
+          </div>
+
+          
+          <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+
+      <!-- Footer -->
+      <%- include('../admin/partials/_footer') %>
+      <!-- ./Footer -->
+    </div>
+    <!-- ./wrapper -->
+
+    <%- include('../admin/partials/_scripts') %>
+  </body>
+</html>
+<% } else { %> <%- include("../admin/partials/_header") %> <%-
+include('../admin/401') %> <% } %>
+

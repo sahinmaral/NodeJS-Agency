@@ -1,0 +1,56 @@
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">About</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+        </div>
+        <ul class="timeline">
+            <% for(let i=0 ; i < abouts.length; i++) { %>
+                <% if(i % 2 == 0) { %>
+                    <li>
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="<%= abouts[i].imageUrl %>" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <% if(!abouts[i].endDate) { %>
+                                    <h4><%= abouts[i].startDate.getFullYear() %> - Present</h4>
+                                <% } else { %> 
+                                    <h4><%= abouts[i].startDate.getFullYear() %> - <%= abouts[i].endDate.getFullYear() %></h4>
+                                <% } %>
+                                <h4 class="subheading"><%= abouts[i].header %></h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted"><%= abouts[i].description %></p></div>
+                        </div>
+                    </li>
+                <% } else { %>   
+                    <li class="timeline-inverted">
+                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="<%= abouts[i].imageUrl %>" alt="..." /></div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <% if(!abouts[i].endDate) { %>
+                                    <h4><%= abouts[i].startDate.getFullYear() %> - Present</h4>
+                                <% } else { %> 
+                                    <h4><%= abouts[i].startDate.getFullYear() %> - <%= abouts[i].endDate.getFullYear() %></h4>
+                                <% } %>
+                                <h4 class="subheading"><%= abouts[i].header %></h4>
+                            </div>
+                            <div class="timeline-body"><p class="text-muted"><%= abouts[i].description %></p></div>
+                        </div>
+                    </li>
+                <% } %>
+
+
+            <% } %>
+            <li class="timeline-inverted">
+                <div class="timeline-image">
+                    <h4>
+                        Be Part
+                        <br />
+                        Of Our
+                        <br />
+                        Story!
+                    </h4>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
