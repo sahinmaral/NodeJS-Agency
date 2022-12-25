@@ -1,5 +1,5 @@
 const {validationResult, check} = require("express-validator")
-const toastr = require('../helpers/toastr')
+const toastr = require('../../helpers/toastr')
 
 validateContact = [
     check("nameSurname")
@@ -15,7 +15,6 @@ validateContact = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
-            console.log(errors.array())
             for (let i = 0; i < errors.array().length; i++) {
                 toastr.sendToastr(req, 'error', errors.array()[i].msg);
             }
@@ -29,11 +28,3 @@ validateContact = [
 ]
 
 module.exports = validateContact
-
-        // if (!errors.isEmpty()){
-        //     global.formErrors = errors.array()
-        //     console.log(global.formErrors)
-        // }
-
-        // global.formErrors = null;
-        // return res.redirect('../index')

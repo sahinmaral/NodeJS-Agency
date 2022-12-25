@@ -1,4 +1,4 @@
-<% if(!userIn) { %>
+<% if(adminInfo) { %>
 <!DOCTYPE html>
 <html lang="en">
   <%- include("../admin/partials/_header") %>
@@ -10,7 +10,7 @@
       >
         <img
           class="animation__shake"
-          src="dist/img/AdminLTELogo.png"
+          src="/assets/img/AdminLTELogo.png"
           alt="AdminLTELogo"
           height="60"
           width="60"

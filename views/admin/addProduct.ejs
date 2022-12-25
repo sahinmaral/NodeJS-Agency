@@ -1,0 +1,114 @@
+<% if(adminInfo) { %>
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../admin/partials/_header") %>
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+      <!-- Preloader -->
+      <div
+        class="preloader flex-column justify-content-center align-items-center"
+      >
+        <img
+          class="animation__shake"
+          src="/assets/img/AdminLTELogo.png"
+          alt="AdminLTELogo"
+          height="60"
+          width="60"
+        />
+      </div>
+
+      <!-- Navbar -->
+      <%- include('../admin/partials/_navbar') %>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <%- include('../admin/partials/_sidebar') %>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <div class="content-header">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <h1 class="m-0">Add new product</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <!-- form start -->
+                <form class="mt-3" action="/admin/products/add" method="post" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name" name="name"
+                      placeholder="Enter name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="slogan">Slogan</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="slogan" name="slogan"
+                      placeholder="Enter slogan"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="image">Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input
+                          type="file"
+                          class="custom-file-input"
+                          id="image" name="image"
+                        />
+                        <label class="custom-file-label" for="image"
+                          >Choose file</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="client">Clients</label>
+                    <select class="form-control" id="client" name="client">
+                      <% for(let i=0; i < clients.length; i++) { %>
+                        <option value="<%= clients[i]._id %>"><%= clients[i].name %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="category">Categories</label>
+                    <select class="form-control" id="category" name="category">
+                        <% for(let i=0; i < categories.length; i++) { %>
+                          <option value="<%= categories[i]._id %>"><%= categories[i].name %></option>
+                        <% } %>
+                    </select>
+                  </div>
+                  <button type="submit" class="btn btn-primary mt-3 w-100">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.content-wrapper -->
+
+      <!-- Footer -->
+      <%- include('../admin/partials/_footer') %>
+      <!-- ./Footer -->
+    </div>
+    <!-- ./wrapper -->
+
+    <%- include('../admin/partials/_scripts') %>
+  </body>
+</html>
+<% } else { %> <%- include("../admin/partials/_header") %> <%-
+include('../admin/401') %> <% } %>
