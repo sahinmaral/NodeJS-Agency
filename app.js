@@ -56,7 +56,9 @@ app.use(
 
 // Global variables
 
-global.adminInfo = null
+global.adminInfo = {
+  username : "sahinmaral"
+}
 
 app.use("/", pageRoute);
 app.use("/contact", contactRoute);

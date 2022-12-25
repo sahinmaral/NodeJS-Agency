@@ -5,50 +5,49 @@ const About = require("../models/About");
 const Admin = require("../models/Admin");
 
 const toastr = require("../helpers/toastr");
-const hashing = require("../helpers/hashing")
+const hashing = require("../helpers/hashing");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
-exports.loginToAdminPanel = async(req,res) => {
-  const {username,password} = req.body
+exports.loginToAdminPanel = async (req, res) => {
+  const { username, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({username:username})
-    if(!admin){
-      toastr.sendToastr(req,"error","Username or password is incorrect1")
-      return res.status(404).redirect('/admin/login')
+    const admin = await Admin.findOne({ username: username });
+    if (!admin) {
+      toastr.sendToastr(req, "error", "Username or password is incorrect1");
+      return res.status(404).redirect("/admin/login");
     }
 
-    const verifyResult = hashing.verifyValueHash(password,admin.password)
-    if(!verifyResult){
-      toastr.sendToastr(req,"error","Username or password is incorrect2")
-      return res.status(404).redirect('/admin/login')
+    const verifyResult = hashing.verifyValueHash(password, admin.password);
+    if (!verifyResult) {
+      toastr.sendToastr(req, "error", "Username or password is incorrect2");
+      return res.status(404).redirect("/admin/login");
     }
 
     req.session.adminInfo = {
-      id : admin._id,
-      username : admin.username
+      id: admin._id,
+      username: admin.username,
     };
 
-    global.adminInfo = req.session.adminInfo
+    global.adminInfo = req.session.adminInfo;
 
-    req.session.save(err => {
-      if(err) throw err
-    })
+    req.session.save((err) => {
+      if (err) throw err;
+    });
 
-    return res.status(200).redirect('/admin')
+    return res.status(200).redirect("/admin");
   } catch (error) {
-    toastr.sendToastr(req,"error",JSON.stringify(error))
-    return res.status(500).redirect('/admin/login')
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/login");
   }
+};
 
-}
-
-exports.logout = async(req,res) => {
-  req.session.destroy(()=> {
-    return res.redirect('/')
-  })
-}
+exports.logout = async (req, res) => {
+  req.session.destroy(() => {
+    return res.redirect("/");
+  });
+};
 
 //#region Products
 
@@ -56,16 +55,19 @@ exports.deleteProduct = async (req, res) => {
   try {
     const deletedProduct = await Product.findById(req.params.id);
 
-    await fs.rm(
-      deletedProduct.imageUrl.replace("./assets", "./public/assets"),
-      { recursive: false },
-      async (err) => {
-        if (err) throw err;
-        else {
-          await deletedProduct.delete();
-        }
-      }
+    const oldImageName = deletedProduct.imageUrl.replace(
+      "./assets",
+      "./public/assets"
     );
+    const isFileExists = await fs.existsSync(oldImageName);
+
+    if (isFileExists) {
+      await fs.rm(oldImageName, { recursive: false }, (err) => {
+        if (err) throw err;
+      });
+    }
+
+    await deletedProduct.delete();
 
     toastr.sendToastr(req, "success", "Product successfully deleted");
     return res.status(200).redirect("/admin/products");
@@ -86,8 +88,9 @@ exports.addProduct = async (req, res) => {
 
     let newImageName =
       "./public/assets/img/portfolio/" + uuidv4().concat(".", imageExtension);
-    newImageName = newImageName.replace("/public", "");
+
     image.mv(newImageName);
+    newImageName = newImageName.replace("/public", "");
 
     await Product.create({
       name: newProduct.name,
@@ -260,7 +263,7 @@ exports.deleteAbout = async (req, res) => {
       "./assets",
       "./public/assets"
     );
-    const isFileExists = await fs.existsSync();
+    const isFileExists = await fs.existsSync(oldImageName);
 
     if (isFileExists) {
       await fs.rm(oldImageName, { recursive: false }, (err) => {
@@ -292,6 +295,27 @@ exports.deleteCategory = async (req, res) => {
       return res.status(404).redirect("/admin/categories");
     }
 
+    const deletedProducts = await Product.find({
+      category: deletedCategory._id,
+    });
+
+    //#region Deleting categories' products
+
+    for (let i = 0; i < deletedProducts.length; i++) {
+      await fs.rm(
+        deletedProducts[i].imageUrl.replace("./assets", "./public/assets"),
+        { recursive: false },
+        async (err) => {
+          if (err) throw err;
+          else {
+            await deletedProducts[i].delete();
+          }
+        }
+      );
+    }
+
+    //#endregion
+
     deletedCategory.delete();
 
     toastr.sendToastr(req, "success", "Category successfully deleted");
@@ -302,4 +326,120 @@ exports.deleteCategory = async (req, res) => {
   }
 };
 
+exports.addCategory = async (req, res) => {
+  try {
+    const newCategory = req.body;
+
+    await Category.create({
+      name: newCategory.name,
+    });
+
+    toastr.sendToastr(req, "success", "Category successfully added");
+    return res.status(200).redirect("/admin/categories");
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+};
+
+exports.updateCategory = async (req, res) => {
+  try {
+    const updatedCategory = await Category.findById(req.body._id);
+
+    await updatedCategory.updateOne({
+      name: req.body.name,
+    });
+
+    toastr.sendToastr(req, "success", "Category successfully updated");
+    return res.status(200).redirect("/admin/categories");
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+};
+
 //#endregion
+
+//#region Clients
+
+exports.deleteClient = async (req, res) => {
+  try {
+    const deletedClient = await Client.findById(req.params.id);
+    if (!deletedClient) {
+      toastr.sendToastr(req, "error", "No client available");
+      return res.status(404).redirect("/admin/clients");
+    }
+
+    const deletedProducts = await Product.find({
+      client: deletedClient._id,
+    });
+
+    //#region Deleting clients' products
+
+    for (let i = 0; i < deletedProducts.length; i++) {
+      await fs.rm(
+        deletedProducts[i].imageUrl.replace("./assets", "./public/assets"),
+        { recursive: false },
+        async (err) => {
+          if (err) throw err;
+          else {
+            await deletedProducts[i].delete();
+          }
+        }
+      );
+    }
+
+    //#endregion
+
+    deletedClient.delete();
+
+    toastr.sendToastr(req, "success", "Client successfully deleted");
+    return res.status(200).redirect("/admin/clients");
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/clients");
+  }
+};
+
+exports.addClient = async (req, res) => {
+  try {
+    const newClient = req.body;
+
+    await Client.create({
+      name: newClient.name,
+    });
+
+    toastr.sendToastr(req, "success", "Client successfully added");
+    return res.status(200).redirect("/admin/clients");
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+};
+
+exports.updateClient = async (req, res) => {
+  try {
+    const updatedClient = await Client.findById(req.body._id);
+
+    await updatedClient.updateOne({
+      name: req.body.name,
+    });
+
+    toastr.sendToastr(req, "success", "Client successfully updated");
+    return res.status(200).redirect("/admin/clients");
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+};
+
+//#endregion
+

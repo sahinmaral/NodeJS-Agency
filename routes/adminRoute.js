@@ -1,7 +1,8 @@
 const express = require('express')
 
 const adminController = require('../controllers/adminController')
-const authMiddleware = require('../middlewares/authMiddleware')
+const validateCategory = require('../middlewares/validator/categoryValidator')
+const validateClient = require('../middlewares/validator/clientValidator')
 const {validateAddAbout,validateUpdateAbout} = require('../middlewares/validator/aboutValidator')
 const validateAdmin = require("../middlewares/validator/adminValidator")
 
@@ -23,9 +24,15 @@ router.route('/abouts/update').post(validateUpdateAbout,adminController.updateAb
 //#endregion
 
 //#region Categories
-router.route('/categories/delete/:id').post(adminController.deleteAbout)
-router.route('/categories/add').post(validateAddAbout,adminController.addAbout)
-router.route('/categories/update').post(validateUpdateAbout,adminController.updateAbout)
+router.route('/categories/delete/:id').post(adminController.deleteCategory)
+router.route('/categories/add').post(validateCategory,adminController.addCategory)
+router.route('/categories/update').post(validateCategory,adminController.updateCategory)
+//#endregion
+
+//#region Clients
+router.route('/clients/delete/:id').post(adminController.deleteClient)
+router.route('/clients/add').post(validateClient,adminController.addClient)
+router.route('/clients/update').post(validateClient,adminController.updateClient)
 //#endregion
 
 module.exports = router

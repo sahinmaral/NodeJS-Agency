@@ -31,7 +31,7 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col">
-                <h1 class="m-0">Products</h1>
+                <h1 class="m-0">Clients</h1>
               </div>
               <!-- /.col -->
             </div>
@@ -53,41 +53,35 @@
                           <tr>
                             <th>#</th>
                             <th>Name</th>
-                            <th>Slogan</th>
-                            <th>Client</th>
-                            <th>Category</th>
                             <th>Options</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <% for(let i=0; i < products.length; i++ ) { %>
+                          <% for(let i=0; i < clients.length; i++ ) { %>
                             <tr>
-                              <td><%= products[i]._id %></td>
-                              <td><%= products[i].name %></td>
-                              <td><%= products[i].slogan %></td>
-                              <td><%= products[i].client.name %></td>
-                              <td><%= products[i].category.name %></td>
+                              <td><%= clients[i]._id %></td>
+                              <td><%= clients[i].name %></td>
                               <td>
-                                <a class="btn btn-success" href="/admin/products/update/<%= products[i]._id %>">Update</a>
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#verifyDeleteProductModal-<%= products[i]._id %>">
+                                <a class="btn btn-success" href="/admin/clients/update/<%= clients[i]._id %>">Update</a>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#verifyDeleteClientModal-<%= clients[i]._id %>">
                                   Delete
                                 </button>
                               </td>
-                              <div class="modal fade" id="verifyDeleteProductModal-<%= products[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="verifyDeleteProductModalLabel" aria-hidden="true">
+                              <div class="modal fade" id="verifyDeleteClientModal-<%= clients[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="verifyDeleteClientModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                   <div class="modal-content">
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="verifyDeleteProductModalLabel">Warning</h5>
+                                      <h5 class="modal-title" id="verifyDeleteClientModalLabel">Warning</h5>
                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>
                                     </div>
                                     <div class="modal-body">
-                                      Are you sure about deleting this product ?
+                                      Are you sure about deleting this client ?
                                     </div>
                                     <div class="modal-footer">
                                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                      <form action="./products/delete/<%= products[i]._id %>" method="post">
+                                      <form action="/admin/clients/delete/<%= clients[i]._id %>" method="post">
                                         <button type="submit" class="btn btn-primary">Delete</button>
                                       </form>
                                     </div>

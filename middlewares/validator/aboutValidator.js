@@ -45,7 +45,7 @@ validateAddAbout = [
         toastr.sendToastr(req, "error", errors.array()[i].msg);
       }
 
-      return res.status(500).redirect("/admin");
+      return res.status(500).redirect("/admin/abouts");
     }
 
     global.formErrors = null;
@@ -94,7 +94,7 @@ validateUpdateAbout = [
         toastr.sendToastr(req, "error", errors.array()[i].msg);
       }
 
-      return res.status(500).redirect("/admin");
+      return res.status(500).redirect("/admin/abouts");
     }
 
     global.formErrors = null;

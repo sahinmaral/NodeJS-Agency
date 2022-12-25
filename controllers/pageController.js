@@ -206,3 +206,41 @@ exports.getAdminAddCategoryPage = async(req,res) => {
 }
 
 //#endregion
+
+//#region Clients
+
+exports.getAdminClientsPage = async(req,res) => {
+  try {
+    const clients = await Client.find();
+
+    return res.status(200).render("./admin/clients", {
+      clients,
+    });
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+}
+
+exports.getAdminUpdateClientPage = async(req,res) => {
+  try {
+    const updatedClient = await Client.findById(req.params.id);
+
+    return res.status(200).render("./admin/updateClient", {
+      updatedClient,
+    });
+  } catch (error) {
+    return res.status(501).json({
+      status: "error has been occured",
+      error: JSON.stringify(error),
+    });
+  }
+}
+
+exports.getAdminAddClientPage = async(req,res) => {
+  return res.status(200).render("./admin/addClient");
+}
+
+//#endregion

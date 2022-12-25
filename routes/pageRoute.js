@@ -24,9 +24,9 @@ router.route('/admin/categories/update/:id').get(pageController.getAdminUpdateCa
 // router.route('/admin/departments/add').get(pageController.getAdminAddDepartmentPage)
 // router.route('/admin/departments/update/:id').get(pageController.getAdminUpdateDepartmentPage)
 
-// router.route('/admin/clients').get(pageController.getAdminClientsPage)
-// router.route('/admin/clients/add').get(pageController.getAdminAddClientPage)
-// router.route('/admin/clients/update/:id').get(pageController.getAdminUpdateClientPage)
+router.route('/admin/clients').get(pageController.getAdminClientsPage)
+router.route('/admin/clients/add').get(pageController.getAdminAddClientPage)
+router.route('/admin/clients/update/:id').get(pageController.getAdminUpdateClientPage)
 
 // router.route('/admin/employees').get(pageController.getAdminEmployeesPage)
 // router.route('/admin/employees/add').get(pageController.getAdminAddEmployeePage)
