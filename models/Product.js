@@ -23,11 +23,13 @@ const ProductSchema = new Schema({
     },
     client : {
         type: Schema.Types.ObjectId,
-        ref : "Client"
+        ref : "Client",
+        required:true
     },
     category : {
         type : Schema.Types.ObjectId,
-        ref:"Category"
+        ref:"Category",
+        required:true
     }
 })
 

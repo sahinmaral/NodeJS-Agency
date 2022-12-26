@@ -20,9 +20,9 @@ router.route('/admin/categories').get(pageController.getAdminCategoriesPage)
 router.route('/admin/categories/add').get(pageController.getAdminAddCategoryPage)
 router.route('/admin/categories/update/:id').get(pageController.getAdminUpdateCategoryPage)
 
-// router.route('/admin/departments').get(pageController.getAdminDepartmentsPage)
-// router.route('/admin/departments/add').get(pageController.getAdminAddDepartmentPage)
-// router.route('/admin/departments/update/:id').get(pageController.getAdminUpdateDepartmentPage)
+router.route('/admin/departments').get(pageController.getAdminDepartmentsPage)
+router.route('/admin/departments/add').get(pageController.getAdminAddDepartmentPage)
+router.route('/admin/departments/update/:id').get(pageController.getAdminUpdateDepartmentPage)
 
 router.route('/admin/clients').get(pageController.getAdminClientsPage)
 router.route('/admin/clients/add').get(pageController.getAdminAddClientPage)

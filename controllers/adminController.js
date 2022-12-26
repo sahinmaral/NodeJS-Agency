@@ -3,6 +3,8 @@ const Category = require("../models/Category");
 const Client = require("../models/Client");
 const About = require("../models/About");
 const Admin = require("../models/Admin");
+const Employee = require("../models/Employee")
+const Department = require("../models/Department")
 
 const toastr = require("../helpers/toastr");
 const hashing = require("../helpers/hashing");
@@ -440,6 +442,84 @@ exports.updateClient = async (req, res) => {
     });
   }
 };
+
+//#endregion
+
+//#region Employees
+
+exports.addEmployee = async(req,res) => {
+  try {
+    const newEmployee = req.body
+
+    await Employee.create({
+      name : newEmployee.name,
+      surname : newEmployee.surname,
+      linkedinUrl : newEmployee.linkedinUrl,
+      githubUrl : newEmployee.githubUrl,
+      department : newEmployee.department
+    })
+
+    toastr.sendToastr(req,"success","Employee successfully added")
+    return res.status(200).redirect('/admin/employees')
+
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/employees");
+  }
+}
+
+//#endregion
+
+//#region Departments
+
+exports.addDepartment = async(req,res) => {
+  try {
+    const newDepartment = req.body
+
+    await Department.create({
+      name : newDepartment.name
+    })
+
+    toastr.sendToastr(req,"success","Department successfully added")
+    return res.status(200).redirect('/admin/departments')
+
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/departments");
+  }
+}
+
+exports.deleteDepartment = async(req,res) => {
+  try {
+    const deletedDepartment = await Department.findById(req.params.id)
+
+    await deletedDepartment.delete()
+
+    toastr.sendToastr(req,"success","Department successfully deleted")
+    return res.status(200).redirect('/admin/departments')
+
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/departments");
+  }
+}
+
+exports.updateDepartment = async(req,res) => {
+  try {
+    const updatedDepartment = await Department.findById(req.body._id)
+
+    await updatedDepartment.update({
+      name : req.body.name
+    })
+
+    toastr.sendToastr(req,"success","Department successfully updated")
+    return res.status(200).redirect('/admin/departments')
+
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(500).redirect("/admin/departments");
+  }
+}
 
 //#endregion
 

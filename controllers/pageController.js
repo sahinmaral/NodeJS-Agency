@@ -244,3 +244,39 @@ exports.getAdminAddClientPage = async(req,res) => {
 }
 
 //#endregion
+
+//#region Departments
+
+exports.getAdminDepartmentsPage = async(req,res) => {
+  try {
+    const departments = await Department.find();
+
+    return res.status(200).render("./admin/departments", {
+      departments,
+    });
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(501).redirect('/admin')
+  }
+}
+
+exports.getAdminUpdateDepartmentPage = async(req,res) => {
+  try {
+    const department = await Department.findById(req.params.id);
+
+    return res.status(200).render("./admin/updateDepartment", {
+      department,
+    });
+  } catch (error) {
+    toastr.sendToastr(req, "error", JSON.stringify(error));
+    return res.status(501).redirect('/admin/departments')
+  }
+}
+
+exports.getAdminAddDepartmentPage = async(req,res) => {
+  return res.status(200).render("./admin/addDepartment");
+}
+
+//#endregion
+
+

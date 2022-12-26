@@ -6,10 +6,9 @@ const DepartmentSchema = new Schema({
         type : Schema.Types.String,
         required : true
     },
-    teams : [
+    employees : [
         {
             type : Schema.Types.ObjectId,
-            required: true
         }
     ]
 
